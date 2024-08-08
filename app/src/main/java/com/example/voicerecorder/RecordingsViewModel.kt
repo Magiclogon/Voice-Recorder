@@ -1,8 +1,11 @@
 package com.example.voicerecorder
 
 import android.content.Context
+import android.content.Intent
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
+import android.net.Uri
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +29,9 @@ class RecordingsViewModel(private val context: Context): ViewModel() {
 
     private val _isCurrentPaused = MutableStateFlow(false)
     val isCurrentPaused: StateFlow<Boolean> = _isCurrentPaused
+
+    private var _showFileOptions = MutableStateFlow(false)
+    var showFileOptions: StateFlow<Boolean> = _showFileOptions
 
     val mediaPlayer = MediaPlayer()
 
@@ -108,4 +114,45 @@ class RecordingsViewModel(private val context: Context): ViewModel() {
         _sliderPosition.value = position
     }
 
+    fun longClick() {
+        _showFileOptions.value = true
+    }
+
+    fun renameFile(oldFile: File, newName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newFile = File(oldFile.parent, "${newName}.${oldFile.extension}")
+            if (oldFile.renameTo(newFile)) {
+                loadAudioFiles(File(context.getExternalFilesDir(null), "recordings"))
+            }
+        }
+    }
+
+    fun deleteFile(file: File){
+        viewModelScope.launch(Dispatchers.IO) {
+            if (file.delete()) {
+                loadAudioFiles(File(context.getExternalFilesDir(null), "recordings"))
+            }
+            _showFileOptions.value = false
+        }
+    }
+
+    fun shareFile(file: File) {
+        val fileUri: Uri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.provider",
+            file
+        )
+
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "audio/*"
+            putExtra(Intent.EXTRA_STREAM, fileUri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        context.startActivity(Intent.createChooser(shareIntent, "Share Audio File"))
+        _showFileOptions.value = false
+    }
+
+    fun onDismiss() {
+        _showFileOptions.value = false
+    }
 }

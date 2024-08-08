@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.drawable.Icon
 import android.media.MediaMetadataRetriever
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
@@ -27,13 +30,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -66,6 +72,8 @@ fun RecordingsPage(
     val sliderPosition by viewModel.sliderPosition.collectAsState()
     val currentPlaying by viewModel.currentPlaying.collectAsState()
     val isPaused by viewModel.isCurrentPaused.collectAsState()
+    val showFileOptions by viewModel.showFileOptions.collectAsState()
+    var selectedFileName by remember{mutableStateOf("")}
 
     LaunchedEffect(directory) {
         viewModel.loadAudioFiles(directory)
@@ -99,9 +107,25 @@ fun RecordingsPage(
                     } else {
                         viewModel.resumeAudio()
                     }
+                },
+                onLongClick =  {
+                    viewModel.longClick()
+                    selectedFileName = audioFile.name
                 }
             )
         }
+    }
+
+    if(showFileOptions) {
+        FileOptionsDialog(
+            onDelete = {
+                viewModel.deleteFile(File(directory, selectedFileName))
+            },
+            onShare = {
+                viewModel.shareFile(File(directory, selectedFileName))
+            },
+            onDismiss = { viewModel.onDismiss() }
+        )
     }
 }
 
@@ -111,6 +135,7 @@ fun RecordingItem(
     duration: String,
     icon: Painter,
     onClick: () -> Unit,
+    onLongClick:  () -> Unit,
     sliderPosition: Float = 0f,
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier
@@ -121,6 +146,11 @@ fun RecordingItem(
             .heightIn(min = 30.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(DarkShark)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = { onLongClick() }
+                )
+            }
     ){
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -203,4 +233,31 @@ private fun formatTime(time: Long): String {
     return String.format("%02d:%02d", minutes, (totalSeconds % 60) + 1)
 }
 
+@Composable
+fun FileOptionsDialog(
+    onDelete: () -> Unit,
+    onShare: () -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = {},
+        title = { Text("File Options") },
+        confirmButton = {
+            Button(
+                onClick = onShare,
+            ) {
+                Text(text = "Share")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = onDelete,
+            ) {
+                Text(text = "Delete")
+            }
+        },
+        modifier = modifier
+    )
+}
 

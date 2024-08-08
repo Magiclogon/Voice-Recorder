@@ -65,7 +65,6 @@ fun RecordPage(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        println("OK")
         Text(
             text = formatTime(time),
             fontSize = 70.sp,
