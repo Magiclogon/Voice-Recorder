@@ -1,9 +1,6 @@
 package com.example.voicerecorder
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.drawable.Icon
-import android.media.MediaMetadataRetriever
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +29,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,8 +46,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.voicerecorder.ui.theme.DarkShark
 import com.example.voicerecorder.ui.theme.Red
-import com.example.voicerecorder.ui.theme.Shark
-import kotlinx.coroutines.launch
 import java.io.File
 
 @Composable
@@ -88,7 +82,7 @@ fun RecordingsPage(
             val audioFile = audioFiles[item]
             val isCurrentPlaying = audioFile.name == currentPlaying
             val remainingDuration = if(isCurrentPlaying) audioFile.duration - sliderPosition * audioFiles[item].duration else audioFiles[item].duration
-            var sliderPos = if(isCurrentPlaying) sliderPosition else 0f
+            val sliderPos = if(isCurrentPlaying) sliderPosition else 0f
             RecordingItem(
                 name = audioFile.name,
                 duration = formatTime(remainingDuration.toLong()),
@@ -241,7 +235,7 @@ fun FileOptionsDialog(
     modifier: Modifier = Modifier
 ) {
     AlertDialog(
-        onDismissRequest = {},
+        onDismissRequest = onDismiss,
         title = { Text("File Options") },
         confirmButton = {
             Button(

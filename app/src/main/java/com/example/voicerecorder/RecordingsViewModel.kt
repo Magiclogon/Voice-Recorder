@@ -33,7 +33,7 @@ class RecordingsViewModel(private val context: Context): ViewModel() {
     private var _showFileOptions = MutableStateFlow(false)
     var showFileOptions: StateFlow<Boolean> = _showFileOptions
 
-    val mediaPlayer = MediaPlayer()
+    private val mediaPlayer = MediaPlayer()
 
     init {
         mediaPlayer.setOnCompletionListener {

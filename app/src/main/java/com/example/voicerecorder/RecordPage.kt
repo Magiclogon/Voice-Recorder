@@ -1,7 +1,6 @@
 package com.example.voicerecorder
 
 import android.annotation.SuppressLint
-import android.icu.text.Collator.ReorderCodes
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,7 +17,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -56,7 +54,7 @@ fun RecordPage(
     val showRenameTab = viewModel.showRenameTab.collectAsState().value
     var fileName by remember { mutableStateOf("") }
 
-    val borderWidth by animateDpAsState(targetValue = if (isRecording) 0.dp else 10.dp)
+    val borderWidth by animateDpAsState(targetValue = if (isRecording) 0.dp else 10.dp, label = "")
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
