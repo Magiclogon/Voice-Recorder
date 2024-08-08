@@ -46,6 +46,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.voicerecorder.ui.theme.DarkShark
 import com.example.voicerecorder.ui.theme.Red
+import com.example.voicerecorder.ui.theme.Shark
 import java.io.File
 
 @Composable
@@ -138,7 +139,6 @@ fun RecordingItem(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 30.dp)
-            .clip(RoundedCornerShape(10.dp))
             .background(DarkShark)
             .pointerInput(Unit) {
                 detectTapGestures(
@@ -236,7 +236,13 @@ fun FileOptionsDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("File Options") },
+        title = {
+            Text(
+                text = "File Options",
+                color = Color.White,
+                fontSize = 20.sp
+            )
+        },
         confirmButton = {
             Button(
                 onClick = onShare,
@@ -251,7 +257,7 @@ fun FileOptionsDialog(
                 Text(text = "Delete")
             }
         },
-        modifier = modifier
+        containerColor = Shark,
     )
 }
 

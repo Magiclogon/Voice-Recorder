@@ -19,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,6 +36,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.voicerecorder.ui.theme.DarkShark
+import com.example.voicerecorder.ui.theme.Shark
 
 @Composable
 fun RecordPage(
@@ -142,14 +145,31 @@ fun RenameTab(
                 Text("Cancel")
             }
         },
-        title = {Text("Choose file name")},
+        title = {
+            Text(
+                text ="Choose file name",
+                color = Color.White,
+                fontSize = 20.sp
+            )
+        },
         text = {
             TextField(
                 value = fileName,
                 onValueChange = onRename,
                 singleLine = true,
                 label = {Text("File name")},
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    focusedContainerColor = DarkShark,
+                    unfocusedContainerColor = DarkShark,
+                    focusedIndicatorColor = Color.Gray,
+                    cursorColor = Color.White,
+                    focusedLabelColor = Color.White,
+                    unfocusedLabelColor = Color.White
+                )
             )
-        }
+        },
+        containerColor = Shark,
     )
 }

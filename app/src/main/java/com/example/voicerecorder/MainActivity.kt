@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -19,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -38,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import com.example.voicerecorder.ui.theme.Shark
+
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalFoundationApi::class)
@@ -134,7 +137,6 @@ fun TabSection(
     onTabSelected:(selectedIndex: Int) -> Unit,
     selectedTabIndex: Int
 ) {
-
     TabRow(
         selectedTabIndex = selectedTabIndex,
         containerColor = Shark,
@@ -147,8 +149,12 @@ fun TabSection(
                 onTabSelected(0)
             },
             text = {
-                Text("Record")
-            }
+                Text(
+                    text = "Record",
+                    fontSize = 16.sp,
+                )
+            },
+
         )
         Tab(
             selected = selectedTabIndex == 1,
@@ -156,7 +162,10 @@ fun TabSection(
                 onTabSelected(1)
             },
             text = {
-                Text("Recordings")
+                Text(
+                    text = "Recordings",
+                    fontSize = 16.sp,
+                )
             }
         )
     }
