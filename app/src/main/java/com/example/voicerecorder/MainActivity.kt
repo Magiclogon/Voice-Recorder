@@ -217,7 +217,7 @@ fun InfoDialog(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "App version: 1.0.1",
+                    text = "App version: 1.1.0",
                     fontSize = 16.sp,
                     color = Color.White,
                     fontFamily = openSansMedium
