@@ -14,9 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -35,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
@@ -50,6 +47,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.voicerecorder.ui.theme.DarkShark
 import com.example.voicerecorder.ui.theme.Red
 import com.example.voicerecorder.ui.theme.Shark
+import com.example.voicerecorder.ui.theme.openSansMedium
 import java.io.File
 
 @Composable
@@ -183,6 +181,7 @@ fun RecordingItem(
                     text = name,
                     color = Color.White,
                     fontSize = 16.sp,
+                    fontFamily = openSansMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -242,7 +241,6 @@ fun FileOptionsDialog(
     onDelete: () -> Unit,
     onShare: () -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,

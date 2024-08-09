@@ -77,7 +77,6 @@ fun RecordPage(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
         ) {
             Button(
                 contentPadding = PaddingValues(0.dp),

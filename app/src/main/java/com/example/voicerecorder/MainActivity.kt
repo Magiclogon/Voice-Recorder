@@ -2,22 +2,31 @@ package com.example.voicerecorder
 
 import android.Manifest
 import android.os.Bundle
+import android.view.RoundedCorner
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -28,18 +37,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import com.example.voicerecorder.ui.theme.Shark
+import com.example.voicerecorder.ui.theme.fontTitle
+import com.example.voicerecorder.ui.theme.openSansMedium
 
 
 class MainActivity : ComponentActivity() {
@@ -60,6 +75,7 @@ class MainActivity : ComponentActivity() {
 
             var selectedTabIndex by remember { mutableIntStateOf(0) }
             val pagerState = rememberPagerState {2}
+            var showInfoDialog by remember { mutableStateOf(false) }
 
             LaunchedEffect(selectedTabIndex) {
                 pagerState.animateScrollToPage(selectedTabIndex)
@@ -74,7 +90,9 @@ class MainActivity : ComponentActivity() {
                     .fillMaxSize()
                     .background(Shark)
             ) {
-                TopBar()
+                TopBar(
+                    onClickInfo = {showInfoDialog = true}
+                )
                 Spacer(modifier = Modifier.height(10.dp))
                 TabSection(
                     selectedTabIndex = selectedTabIndex,
@@ -94,16 +112,20 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+            if(showInfoDialog) {
+                InfoDialog(
+                    onDismiss = {showInfoDialog = false}
+                )
+            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
-
-    val fontTitle = FontFamily(Font(R.font.oswald_medium, FontWeight.Medium))
-
+fun TopBar(
+    onClickInfo: () -> Unit
+) {
     TopAppBar(
         title =  {
             Text(
@@ -114,7 +136,7 @@ fun TopBar() {
             )
         },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = onClickInfo) {
                 Icon(
                     painter = painterResource(id = R.drawable.app),
                     contentDescription = "About button",
@@ -152,6 +174,7 @@ fun TabSection(
                 Text(
                     text = "Record",
                     fontSize = 16.sp,
+                    fontFamily = openSansMedium
                 )
             },
 
@@ -165,9 +188,66 @@ fun TabSection(
                 Text(
                     text = "Recordings",
                     fontSize = 16.sp,
+                    fontFamily = openSansMedium
+
                 )
             }
         )
+    }
+}
+
+@Composable
+fun InfoDialog(
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Dialog(
+        onDismissRequest = onDismiss,
+    ) {
+        Surface(
+            shape = RoundedCornerShape(10.dp),
+            color = Shark,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.5f)
+                .wrapContentSize()
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = "Voice Recorder",
+                    fontSize = 24.sp,
+                    color = Color.White,
+                    fontFamily = fontTitle
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "App version: 1.0.1",
+                    fontSize = 16.sp,
+                    color = Color.White,
+                    fontFamily = openSansMedium
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Developer: Walid H (Tartiflettaa)",
+                    fontSize = 16.sp,
+                    color = Color.White,
+                    fontFamily = openSansMedium
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Open Source Project available at: https://github.com/Magiclogon/Voice-Recorder",
+                    fontSize = 16.sp,
+                    color = Color.White,
+                    fontFamily = openSansMedium
+                )
+            }
+        }
     }
 }
 

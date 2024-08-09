@@ -12,7 +12,7 @@ class RecordViewModel(context: Context): ViewModel() {
 
     private val audioRecorder = AndroidAudioRecorder(context)
 
-    private val _time  = MutableStateFlow(0L)
+    private var _time  = MutableStateFlow(0L)
     val time: StateFlow<Long> = _time
 
     private var _isRecording = MutableStateFlow(false)
@@ -51,6 +51,7 @@ class RecordViewModel(context: Context): ViewModel() {
         if(fileName.isNotBlank()) {
             audioRecorder.renameFile(fileName)
             _showRenameTab.value = false
+            _time.value = 0L
         }
     }
 }
