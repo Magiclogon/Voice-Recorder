@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
@@ -23,6 +24,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderColors
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -69,6 +72,7 @@ fun RecordingsPage(
     val isPaused by viewModel.isCurrentPaused.collectAsState()
     val showFileOptions by viewModel.showFileOptions.collectAsState()
     var selectedFileName by remember{mutableStateOf("")}
+    var newFileName by remember { mutableStateOf("") }
 
     LaunchedEffect(directory) {
         viewModel.loadAudioFiles(directory)
@@ -119,7 +123,10 @@ fun RecordingsPage(
             onShare = {
                 viewModel.shareFile(File(directory, selectedFileName))
             },
-            onDismiss = { viewModel.onDismiss() }
+            onDismiss = { viewModel.onDismiss() },
+            onValueChange = {newFileName = it},
+            fileName = newFileName,
+            onRename = {viewModel.renameFile(File(directory, selectedFileName), newFileName)}
         )
     }
 }
@@ -229,6 +236,9 @@ private fun formatTime(time: Long): String {
 
 @Composable
 fun FileOptionsDialog(
+    fileName: String,
+    onRename: () -> Unit,
+    onValueChange: (String) -> Unit,
     onDelete: () -> Unit,
     onShare: () -> Unit,
     onDismiss: () -> Unit,
@@ -255,6 +265,44 @@ fun FileOptionsDialog(
                 onClick = onDelete,
             ) {
                 Text(text = "Delete")
+            }
+        },
+        text = {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
+                TextField(
+                    value = fileName,
+                    onValueChange = onValueChange,
+                    singleLine = true,
+                    label = {Text("File name")},
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        focusedContainerColor = DarkShark,
+                        unfocusedContainerColor = DarkShark,
+                        focusedIndicatorColor = Color.Gray,
+                        cursorColor = Color.White,
+                        focusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.White
+                    ),
+                    modifier = Modifier.weight(8f)
+                )
+                IconButton(
+                    onClick = onRename,
+                    modifier = Modifier.weight(2f)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.rename),
+                        contentDescription = "Rename Button",
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         },
         containerColor = Shark,

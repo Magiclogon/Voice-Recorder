@@ -120,9 +120,12 @@ class RecordingsViewModel(private val context: Context): ViewModel() {
 
     fun renameFile(oldFile: File, newName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val newFile = File(oldFile.parent, "${newName}.${oldFile.extension}")
-            if (oldFile.renameTo(newFile)) {
-                loadAudioFiles(File(context.getExternalFilesDir(null), "recordings"))
+            if(newName.isNotBlank()) {
+                val newFile = File(oldFile.parent, "${newName}.${oldFile.extension}")
+                if (oldFile.renameTo(newFile)) {
+                    loadAudioFiles(File(context.getExternalFilesDir(null), "recordings"))
+                }
+                _showFileOptions.value = false
             }
         }
     }
