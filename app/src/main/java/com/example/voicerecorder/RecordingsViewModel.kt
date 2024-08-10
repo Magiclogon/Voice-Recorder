@@ -5,6 +5,9 @@ import android.content.Intent
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -116,6 +119,8 @@ class RecordingsViewModel(private val context: Context): ViewModel() {
 
     fun longClick() {
         _showFileOptions.value = true
+        vibrateDevice(context)
+
     }
 
     fun renameFile(oldFile: File, newName: String) {
@@ -157,5 +162,16 @@ class RecordingsViewModel(private val context: Context): ViewModel() {
 
     fun onDismiss() {
         _showFileOptions.value = false
+    }
+
+    private fun vibrateDevice(context: Context) {
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(
+                VibrationEffect.createOneShot(120, VibrationEffect.DEFAULT_AMPLITUDE)
+            )
+        } else {
+            vibrator.vibrate(200)
+        }
     }
 }

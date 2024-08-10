@@ -89,6 +89,7 @@ fun RecordingsPage(
             RecordingItem(
                 name = audioFile.name,
                 duration = formatTime(remainingDuration.toLong()),
+                backgroundColor = if(audioFile.name == selectedFileName) Color.Black else DarkShark,
                 icon = painterResource(id = if(!isPaused && isCurrentPlaying) R.drawable.pause else R.drawable.play_button),
                 sliderPosition = sliderPos,
                 onValueChange = {position ->
@@ -120,11 +121,18 @@ fun RecordingsPage(
             },
             onShare = {
                 viewModel.shareFile(File(directory, selectedFileName))
+                selectedFileName = ""
             },
-            onDismiss = { viewModel.onDismiss() },
+            onDismiss = {
+                viewModel.onDismiss()
+                selectedFileName = ""
+            },
             onValueChange = {newFileName = it},
             fileName = newFileName,
-            onRename = {viewModel.renameFile(File(directory, selectedFileName), newFileName)}
+            onRename = {
+                viewModel.renameFile(File(directory, selectedFileName), newFileName)
+                selectedFileName = ""
+            }
         )
     }
 }
@@ -132,6 +140,7 @@ fun RecordingsPage(
 @Composable
 fun RecordingItem(
     name: String,
+    backgroundColor: Color,
     duration: String,
     icon: Painter,
     onClick: () -> Unit,
@@ -144,7 +153,7 @@ fun RecordingItem(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 30.dp)
-            .background(DarkShark)
+            .background(backgroundColor)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = { onLongClick() }
