@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resource xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.AnimatedSplash.MySplash" parent="ThemeSplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_voicerecorder_splash</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.AnimatedSplash</item>
+    </style>
+</resource>

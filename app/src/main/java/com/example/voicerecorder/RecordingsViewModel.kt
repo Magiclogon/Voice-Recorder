@@ -168,10 +168,10 @@ class RecordingsViewModel(private val context: Context): ViewModel() {
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(
-                VibrationEffect.createOneShot(120, VibrationEffect.DEFAULT_AMPLITUDE)
+                VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
             )
         } else {
-            vibrator.vibrate(200)
+            vibrator.vibrate(100)
         }
     }
 }

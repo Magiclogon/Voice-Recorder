@@ -39,14 +39,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.voicerecorder.ui.theme.AppTheme
-import com.example.voicerecorder.ui.theme.Shark
 import com.example.voicerecorder.ui.theme.fontTitle
 import com.example.voicerecorder.ui.theme.openSansMedium
 
@@ -55,12 +54,11 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().setKeepOnScreenCondition { false }
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
-                Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.RECORD_AUDIO
             ),
             0
         )
@@ -115,6 +113,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -229,7 +228,7 @@ fun InfoDialog(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "App version: 1.2.0",
+                    text = "App version: 1.2.1",
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = openSansMedium

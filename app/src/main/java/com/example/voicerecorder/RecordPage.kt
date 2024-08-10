@@ -38,8 +38,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.voicerecorder.ui.theme.DarkShark
-import com.example.voicerecorder.ui.theme.Shark
 
 @Composable
 fun RecordPage(
