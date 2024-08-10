@@ -17,7 +17,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -70,7 +72,7 @@ fun RecordPage(
             text = formatTime(time),
             fontSize = 70.sp,
             textAlign = TextAlign.Center,
-            color = Color.White
+            color = MaterialTheme.colorScheme.onBackground
         )
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -101,7 +103,7 @@ fun RecordPage(
                     modifier = Modifier
                         .size(80.dp)
                         .background(color = Color.Red, shape = CircleShape)
-                        .border(width = borderWidth, color = Color.White, shape = CircleShape)
+                        .border(width = borderWidth, color = MaterialTheme.colorScheme.surface, shape = CircleShape)
                 )
             }
         }
@@ -135,19 +137,25 @@ fun RenameTab(
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            Button(onClick = onSave){
-                Text("Save")
+            TextButton(onClick = onSave){
+                Text(
+                    text = "Save",
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         },
         dismissButton = {
-            Button(onClick = onDismiss) {
-                Text("Cancel")
+            TextButton(onClick = onDismiss) {
+                Text(
+                    text = "Cancel",
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         },
         title = {
             Text(
                 text ="Choose file name",
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 20.sp
             )
         },
@@ -156,19 +164,20 @@ fun RenameTab(
                 value = fileName,
                 onValueChange = onRename,
                 singleLine = true,
-                label = {Text("File name")},
+                label = { Text(text = "File name") },
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedContainerColor = DarkShark,
-                    unfocusedContainerColor = DarkShark,
-                    focusedIndicatorColor = Color.Gray,
-                    cursorColor = Color.White,
-                    focusedLabelColor = Color.White,
-                    unfocusedLabelColor = Color.White
+                    focusedTextColor = MaterialTheme.colorScheme.primary,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    cursorColor = MaterialTheme.colorScheme.onSurface,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
         },
-        containerColor = Shark,
+        containerColor = MaterialTheme.colorScheme.surface,
     )
 }

@@ -19,9 +19,11 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderColors
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -89,7 +91,7 @@ fun RecordingsPage(
             RecordingItem(
                 name = audioFile.name,
                 duration = formatTime(remainingDuration.toLong()),
-                backgroundColor = if(audioFile.name == selectedFileName) Color.Black else DarkShark,
+                backgroundColor = if(audioFile.name == selectedFileName) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainer,
                 icon = painterResource(id = if(!isPaused && isCurrentPlaying) R.drawable.pause else R.drawable.play_button),
                 sliderPosition = sliderPos,
                 onValueChange = {position ->
@@ -109,7 +111,7 @@ fun RecordingsPage(
                 onLongClick =  {
                     viewModel.longClick()
                     selectedFileName = audioFile.name
-                }
+                },
             )
         }
     }
@@ -156,7 +158,7 @@ fun RecordingItem(
             .background(backgroundColor)
             .pointerInput(Unit) {
                 detectTapGestures(
-                    onLongPress = { onLongClick() }
+                    onLongPress = { onLongClick() },
                 )
             }
     ){
@@ -176,7 +178,7 @@ fun RecordingItem(
                 Icon(
                     painter = icon,
                     contentDescription = "Play Button",
-                    tint = Color.White,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier
                 )
             }
@@ -188,7 +190,7 @@ fun RecordingItem(
             ){
                 Text(
                     text = name,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     fontSize = 16.sp,
                     fontFamily = openSansMedium,
                     maxLines = 1,
@@ -207,11 +209,11 @@ fun RecordingItem(
                             .fillMaxWidth()
                             .weight(7.5f),
                         colors = SliderColors(
-                            thumbColor = Red,
-                            activeTrackColor = Red,
-                            inactiveTrackColor = Color.White.copy(alpha = 0.3f),
-                            activeTickColor = Red,
-                            inactiveTickColor = Color.White.copy(alpha = 0.5f),
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                            activeTickColor = MaterialTheme.colorScheme.primary,
+                            inactiveTickColor = MaterialTheme.colorScheme.primaryContainer,
                             disabledInactiveTickColor = Color.White.copy(alpha = 0.5f),
                             disabledActiveTickColor = Red,
                             disabledThumbColor = Color.White.copy(alpha = 0.5f),
@@ -221,7 +223,7 @@ fun RecordingItem(
                     )
                     Text(
                         text = duration,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         fontSize = 14.sp,
                         modifier = Modifier
                             .weight(2.5f)
@@ -256,22 +258,28 @@ fun FileOptionsDialog(
         title = {
             Text(
                 text = "File Options",
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 20.sp
             )
         },
         confirmButton = {
-            Button(
+            TextButton(
                 onClick = onShare,
             ) {
-                Text(text = "Share")
+                Text(
+                    text = "Share",
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         },
         dismissButton = {
-            Button(
+            TextButton(
                 onClick = onDelete,
             ) {
-                Text(text = "Delete")
+                Text(
+                    text = "Delete",
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         },
         text = {
@@ -288,14 +296,15 @@ fun FileOptionsDialog(
                     singleLine = true,
                     label = {Text("File name")},
                     colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White,
-                        focusedContainerColor = DarkShark,
-                        unfocusedContainerColor = DarkShark,
-                        focusedIndicatorColor = Color.Gray,
-                        cursorColor = Color.White,
-                        focusedLabelColor = Color.White,
-                        unfocusedLabelColor = Color.White
+                        focusedTextColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        cursorColor = MaterialTheme.colorScheme.onSurface,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     modifier = Modifier.weight(8f)
                 )
@@ -306,13 +315,13 @@ fun FileOptionsDialog(
                     Icon(
                         painter = painterResource(id = R.drawable.rename),
                         contentDescription = "Rename Button",
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.size(20.dp)
                     )
                 }
             }
         },
-        containerColor = Shark,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
     )
 }
 

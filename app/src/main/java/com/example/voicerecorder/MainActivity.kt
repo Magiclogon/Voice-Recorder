@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
+import com.example.voicerecorder.ui.theme.AppTheme
 import com.example.voicerecorder.ui.theme.Shark
 import com.example.voicerecorder.ui.theme.fontTitle
 import com.example.voicerecorder.ui.theme.openSansMedium
@@ -64,51 +66,52 @@ class MainActivity : ComponentActivity() {
         )
         enableEdgeToEdge()
         setContent {
+            AppTheme {
+                var selectedTabIndex by remember { mutableIntStateOf(0) }
+                val pagerState = rememberPagerState {2}
+                var showInfoDialog by remember { mutableStateOf(false) }
 
-            var selectedTabIndex by remember { mutableIntStateOf(0) }
-            val pagerState = rememberPagerState {2}
-            var showInfoDialog by remember { mutableStateOf(false) }
+                LaunchedEffect(selectedTabIndex) {
+                    pagerState.animateScrollToPage(selectedTabIndex)
+                }
 
-            LaunchedEffect(selectedTabIndex) {
-                pagerState.animateScrollToPage(selectedTabIndex)
-            }
+                LaunchedEffect(pagerState.currentPage) {
+                    selectedTabIndex = pagerState.currentPage
+                }
 
-            LaunchedEffect(pagerState.currentPage) {
-                selectedTabIndex = pagerState.currentPage
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Shark)
-            ) {
-                TopBar(
-                    onClickInfo = {showInfoDialog = true}
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                TabSection(
-                    selectedTabIndex = selectedTabIndex,
-                    onTabSelected = { index ->
-                        selectedTabIndex = index
-                    }
-                )
-                HorizontalPager(
-                    state = pagerState,
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .weight(1f)
-                ) { page ->
-                    when(page) {
-                        0 -> RecordPage()
-                        1 -> RecordingsPage()
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    TopBar(
+                        onClickInfo = {showInfoDialog = true}
+                    )
+                    TabSection(
+                        selectedTabIndex = selectedTabIndex,
+                        onTabSelected = { index ->
+                            selectedTabIndex = index
+                        }
+                    )
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f)
+                    ) { page ->
+                        when(page) {
+                            0 -> RecordPage()
+                            1 -> RecordingsPage()
+                        }
                     }
                 }
+                if(showInfoDialog) {
+                    InfoDialog(
+                        onDismiss = {showInfoDialog = false}
+                    )
+                }
             }
-            if(showInfoDialog) {
-                InfoDialog(
-                    onDismiss = {showInfoDialog = false}
-                )
-            }
+
         }
     }
 }
@@ -124,7 +127,7 @@ fun TopBar(
                 text = "Voice Recorder",
                 fontFamily = fontTitle,
                 fontSize = 20.sp,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onSurface
             )
         },
         actions = {
@@ -132,15 +135,14 @@ fun TopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.app),
                     contentDescription = "About button",
-                    tint = Color.White,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .size(24.dp)
                 )
-                
             }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = Shark
+            containerColor = MaterialTheme.colorScheme.surface,
         )
     )
 }
@@ -152,8 +154,8 @@ fun TabSection(
 ) {
     TabRow(
         selectedTabIndex = selectedTabIndex,
-        containerColor = Shark,
-        contentColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
 
     ) {
         Tab(
@@ -165,10 +167,15 @@ fun TabSection(
                 Text(
                     text = "Record",
                     fontSize = 16.sp,
-                    fontFamily = openSansMedium
+                    fontFamily = openSansMedium,
                 )
             },
-
+            selectedContentColor = MaterialTheme.colorScheme.onSurface,
+            unselectedContentColor = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surface
+                )
         )
         Tab(
             selected = selectedTabIndex == 1,
@@ -180,9 +187,14 @@ fun TabSection(
                     text = "Recordings",
                     fontSize = 16.sp,
                     fontFamily = openSansMedium
-
                 )
-            }
+            },
+            selectedContentColor = MaterialTheme.colorScheme.onSurface,
+            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surface
+                )
         )
     }
 }
@@ -196,7 +208,7 @@ fun InfoDialog(
     ) {
         Surface(
             shape = RoundedCornerShape(10.dp),
-            color = Shark,
+            color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
@@ -212,28 +224,28 @@ fun InfoDialog(
                 Text(
                     text = "Voice Recorder",
                     fontSize = 24.sp,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = fontTitle
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "App version: 1.1.0",
+                    text = "App version: 1.2.0",
                     fontSize = 16.sp,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = openSansMedium
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "Developer: Walid H (Tartiflettaa)",
                     fontSize = 16.sp,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = openSansMedium
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "Open Source Project available at: https://github.com/Magiclogon/Voice-Recorder",
                     fontSize = 16.sp,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = openSansMedium
                 )
             }
