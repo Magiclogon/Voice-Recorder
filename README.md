@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <a><img src="https://github.com/Magiclogon/Voice-Recorder/blob/master/Logo_SVG.svg" alt="Voice Recorder" width="200"></a>
+  <a><img src="https://github.com/Magiclogon/Voice-Recorder/blob/master/images/logo/Logo_SVG.svg" alt="Voice Recorder" width="200"></a>
   <br>
   Voice Recorder
   <br>
@@ -14,11 +14,16 @@
   <a href="#key-features">Key Features</a> •
   <a href="#download">Download</a> •
   <a href="#credits">Credits</a> •
-  <a href="#related">Related</a> •
   <a href="#license">License</a>
 </p>
 
-![screenshot](https://github.com/Magiclogon/Voice-Recorder/blob/master/VoiceRecorderDemo.gif)
+<div style="display: flex;">
+    <img src="https://github.com/Magiclogon/Voice-Recorder/blob/master/images/demo/RecorderLight1.png" alt="Screenshot 1" style="width: 200px; height: auto; margin-right: 10px;">
+    <img src="https://github.com/Magiclogon/Voice-Recorder/blob/master/images/demo/RecorderLight2.png" alt="Screenshot 2" style="width: 200px; height: auto; margin-right: 10px;">
+    <img src="https://github.com/Magiclogon/Voice-Recorder/blob/master/images/demo/RecorderLight3.png" alt="Screenshot 3" style="width: 200px; height: auto; margin-right: 10px;">
+  <img src="https://github.com/Magiclogon/Voice-Recorder/blob/master/images/demo/RecorderDark1.png" alt="Screenshot 3" style="width: 200px; height: auto; margin-right: 10px;">
+  <img src="https://github.com/Magiclogon/Voice-Recorder/blob/master/images/demo/RecorderDark2.png" alt="Screenshot 3" style="width: 200px; height: auto; margin-right: 10px;">
+</div>
 
 ## Key Features
 
