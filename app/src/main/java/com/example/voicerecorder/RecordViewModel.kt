@@ -45,6 +45,7 @@ class RecordViewModel(context: Context): ViewModel() {
     fun onDismiss() {
         _showRenameTab.value = false
         audioRecorder.deleteFile()
+        _time.value = 0L
     }
 
     fun onSave(fileName: String) {
